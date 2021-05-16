@@ -42,7 +42,7 @@ def entry_page():
 
 @app.route('/viewlog')
 def view_the_log()->'html':
-
+# Подключение к базе данных:
     with UseDatabase(app.config['dbconfig']) as cursor:
         _SQL = """select phrase, letters, ip, browser_string, results
         from log"""

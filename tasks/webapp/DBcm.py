@@ -1,5 +1,5 @@
 import mysql.connector
-
+# Магические методы для входа в базу данных спомощью with
 class UseDatabase:
     def __init__(self, config: dict) -> None:
         self.configuration = config
