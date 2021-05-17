@@ -1,7 +1,8 @@
 from flask import  Flask, render_template, request, escape
 from vsearch import search4letters
-
 from DBcm import UseDatabase
+from checker import check_logged_in
+
 
 app = Flask(__name__)
 
@@ -9,6 +10,18 @@ app.config['dbconfig'] = {'host': '127.0.0.1',
                           'user': 'vsearch',
                           'password': 'vsearchpasswd',
                           'database': 'vsearchlogDB', }
+
+@app.route('/login')
+def do_login()->str:
+    session['logged_in'] = True
+    return 'You are now logged in.'
+
+@app.route('/logout')
+def do_logout()->str:
+    session.pop('logged_in')
+    return 'You are now logged out.'
+
+
 
 def log_request(req: 'flask_request', res: str) -> None:
 
@@ -41,6 +54,7 @@ def entry_page():
     return render_template('entry.html', the_title='Welcome to search4letters on the web!')
 
 @app.route('/viewlog')
+@check_logged_in
 def view_the_log()->'html':
 # Подключение к базе данных:
     with UseDatabase(app.config['dbconfig']) as cursor:
@@ -56,6 +70,8 @@ def view_the_log()->'html':
         the_row_titles=titles,
         the_data=contents,
     )
+
+app.secret_key = 'YouWillNeverGuessMySecretKey'
 
 
 if __name__ == '__main__':
