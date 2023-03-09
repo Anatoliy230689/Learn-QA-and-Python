@@ -29,8 +29,3 @@ class Book:
 
 book = Book(title='Python ООП', author='Сергей Балакирев', pages=123, year=2022)
 print(book.__dict__)
-book.pages='20'
-print(type(book.title))
-
-
-
